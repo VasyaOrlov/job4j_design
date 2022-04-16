@@ -7,7 +7,7 @@ import java.util.ConcurrentModificationException;
 import java.util.Objects;
 
 /**
- * Класс для реализации списка на основе динамического массива, аналог ArrayList
+ * Класс для реализации списка на основе динамического массива, аналог ArrayList.
  * @param <T> - обобщеный тип принимаемого объекта в список
  */
 public class SimpleArrayList<T> implements List<T> {
