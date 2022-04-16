@@ -19,14 +19,19 @@ public class Generics {
         gen.printObject(third);
         System.out.println();
 
-        //gen.printBoundedWildCard(first); вызовет ошибку компиляции т.к. переменная first имеет тип Animal, который является супер классом для Predator
+        /**
+         * gen.printBoundedWildCard(first); вызовет ошибку компиляции т.к. переменная first имеет тип Animal,
+         * который является супер классом для Predator
+         */
         gen.printBoundedWildCard(second);
         gen.printBoundedWildCard(third);
         System.out.println();
 
         gen.printLowerBoundedWildCard(first);
         gen.printLowerBoundedWildCard(second);
-        //gen.printLowerBoundedWildCard(third); вызовет ошибку компиляции т.к. переменная third имеет тип Tiger, который является наследником класса Predator
+        /**
+         * gen.printLowerBoundedWildCard(third); вызовет ошибку компиляции т.к. переменная third имеет тип Tiger, который является наследником класса Predator
+         */
     }
 
     public void printObject(List<?> list) {
