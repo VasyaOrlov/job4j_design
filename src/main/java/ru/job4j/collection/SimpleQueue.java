@@ -15,13 +15,13 @@ public class SimpleQueue<T> {
      * @return - возвращает первое значение
      */
     public T poll() {
+        if (in.isEmpty() && out.isEmpty()) {
+            throw new NoSuchElementException();
+        }
         if (out.isEmpty()) {
             while (!in.isEmpty()) {
                 out.push(in.pop());
             }
-        }
-        if (out.isEmpty()) {
-            throw new NoSuchElementException();
         }
         return out.pop();
     }
