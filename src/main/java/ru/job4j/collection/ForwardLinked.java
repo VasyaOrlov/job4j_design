@@ -67,19 +67,20 @@ public class ForwardLinked<T> implements Iterable<T> {
      * @return - возвращает перевернут или нет
      */
     public boolean revert() {
-        if (isEmpty() || head.next == null) {
-            return false;
+        boolean rsl = false;
+        if (!isEmpty() && head.next != null) {
+            Node<T> node = head.next;
+            head.next = null;
+            Node<T> next;
+            while (node != null) {
+                next = node.next;
+                node.next = head;
+                head = node;
+                node = next;
+            }
+            rsl = true;
         }
-        Node<T> node = head.next;
-        head.next = null;
-        Node<T> next;
-        while (node != null) {
-            next = node.next;
-            node.next = head;
-            head = node;
-            node = next;
-        }
-        return true;
+        return rsl;
     }
 
     @Override
