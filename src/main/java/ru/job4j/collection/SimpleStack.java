@@ -26,4 +26,12 @@ public class SimpleStack<T> {
     public void push(T value) {
         linked.addFirst(value);
     }
+
+    /**
+     * метод проверяет пуст ли список
+     * @return - значение пуст ли список
+     */
+    public boolean isEmpty() {
+        return linked.isEmpty();
+    }
 }

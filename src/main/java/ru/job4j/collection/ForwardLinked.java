@@ -54,6 +54,14 @@ public class ForwardLinked<T> implements Iterable<T> {
         return rsl;
     }
 
+    /**
+     * метод проверяет пуст ли список
+     * @return - значение пуст ли список
+     */
+    public boolean isEmpty() {
+        return head == null;
+    }
+
     @Override
     public Iterator<T> iterator() {
         return new Iterator<>() {
