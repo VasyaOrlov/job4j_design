@@ -1,5 +1,7 @@
 package ru.job4j.collection;
 
+import java.util.NoSuchElementException;
+
 /**
  * класс реализует организацию данных - очередь
  * @param <T> - тип принимаемого значения
@@ -17,6 +19,9 @@ public class SimpleQueue<T> {
             while (!in.isEmpty()) {
                 out.push(in.pop());
             }
+        }
+        if (out.isEmpty()) {
+            throw new NoSuchElementException();
         }
         return out.pop();
     }
