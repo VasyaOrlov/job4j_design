@@ -14,7 +14,12 @@ public class User {
     }
 
     public static void main(String[] args) {
-        Calendar data = new GregorianCalendar(1993, 3, 20);
+        Calendar data = new GregorianCalendar(1993,
+                3,
+                20,
+                5,
+                6,
+                10);
         User first = new User("Vasia", 0, data);
         User second = new User("Vasia", 0, data);
         Map<User, Object> map = new HashMap<>();
@@ -24,10 +29,19 @@ public class User {
     }
 
     @Override
-    public String toString() {
-        return "User{"
-                + "name='" + name + '\''
-                + ", children=" + children
-                + '}';
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        User user = (User) o;
+        return children == user.children && Objects.equals(name, user.name) && Objects.equals(birthday, user.birthday);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, children, birthday);
     }
 }
