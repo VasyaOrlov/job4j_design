@@ -95,7 +95,10 @@ public class SimpleMap<K, V> implements MapTrial<K, V> {
      */
     @Override
     public V get(K key) {
-        MapEntry<K, V> rsl = table[indexFor(hash(key.hashCode()))];
+        int index = indexFor(hash(key.hashCode()));
+        MapEntry<K, V> rsl = table[index] != null
+                ? (table[index].key.equals(key) ? table[index] : null)
+                : null;
         return rsl == null ? null : rsl.value;
     }
 
@@ -107,10 +110,13 @@ public class SimpleMap<K, V> implements MapTrial<K, V> {
     @Override
     public boolean remove(K key) {
         int index = indexFor(hash(key.hashCode()));
-        boolean rsl = table[index] != null;
-        table[index] = null;
-        count--;
-        modCount++;
+        boolean rsl = false;
+        if (table[index] != null) {
+            rsl = table[index].key.equals(key);
+            table[index] = null;
+            count--;
+            modCount++;
+        }
         return rsl;
     }
 
@@ -128,13 +134,15 @@ public class SimpleMap<K, V> implements MapTrial<K, V> {
                 if (expectModCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
+                boolean rsl = false;
                 while (countIt < capacity) {
                     if (table[countIt] != null) {
-                        return true;
+                        rsl = true;
+                        break;
                     }
                     countIt++;
                 }
-                return false;
+                return rsl;
             }
 
             @Override
