@@ -18,14 +18,17 @@ public class Analize {
         int added;
         int changed = 0;
         int deleted = 0;
+        Map<User, String> mapCurrent = new HashMap<>();
+        for (User user : current) {
+            mapCurrent.put(user, user.getName());
+        }
         for (User user : previous) {
-            if (!current.contains(user)) {
+            String name = mapCurrent.get(user);
+            if (name == null) {
                 deleted++;
             }
-            for (User curUser : current) {
-                if (user.getId() == curUser.getId() && !user.getName().equals(curUser.getName())) {
-                    changed++;
-                }
+            if (name != null && !name.equals(user.getName())) {
+                changed++;
             }
         }
         added = current.size() - previous.size() + deleted;
