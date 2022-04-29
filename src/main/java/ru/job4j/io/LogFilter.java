@@ -20,7 +20,7 @@ public class LogFilter {
             rsl = in.lines()
                     .filter(x -> {
                         String[] word = x.split(" ");
-                        return word[word.length - 2].equals("404");
+                        return "404".equals(word[word.length - 2]);
                     })
                     .toList();
         } catch (IOException e) {
@@ -47,7 +47,9 @@ public class LogFilter {
     public static void main(String[] args) {
         LogFilter logFilter = new LogFilter();
         List<String> log = logFilter.filter("log.txt");
-        System.out.println(log);
+        for (String str : log) {
+            System.out.println(str);
+        }
         save(log, "404.txt");
     }
 }
