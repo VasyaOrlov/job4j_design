@@ -17,7 +17,7 @@ public class Config {
      * values - карта
      */
     private final String path;
-    private final Map<String, String> values = new HashMap<String, String>();
+    private final Map<String, String> values = new HashMap<>();
 
     public Config(final String path) {
         this.path = path;
@@ -32,12 +32,13 @@ public class Config {
                     .filter(e -> e.length() > 0)
                     .filter(e -> !e.startsWith("#"))
                     .forEach(e -> {
-                        if (!e.contains("=") || "=".equals(e)) {
-                            throw new IllegalArgumentException();
+                        if (!e.contains("=")) {
+                            throw new IllegalArgumentException("Нарушение шаблона ключ=значение. Отсутствует знак '='");
                         }
                         String[] word = e.split("=", 2);
                         if (word[0].length() == 0 || word[1].length() == 0) {
-                            throw new IllegalArgumentException();
+                            throw new IllegalArgumentException(
+                                    "Нарушение шаблона ключ=значение. Отсутсвуют значения ключа и/или значения");
                         } else {
                             values.put(word[0], word[1]);
                         }
