@@ -2,7 +2,16 @@ package ru.job4j.io;
 
 import java.io.*;
 
+/**
+ * класс для вывода статистики работы сервера
+ */
 public class Analizy {
+
+    /**
+     * метод по данным файла лога определяет диапозон времени когда сервер не работал и записывает в файл
+     * @param source - лог файл
+     * @param target - файл для записи
+     */
     public void unavailable(String source, String target) {
         boolean job = true;
         try (BufferedReader text = new BufferedReader(new FileReader(source));
@@ -12,11 +21,11 @@ public class Analizy {
                 if (line.contains("400") || line.contains("500")) {
                     if (job) {
                         job = false;
-                        writer.write(line.substring(5) + ";");
+                        writer.write(line.substring(4) + ";");
                     }
                 } else {
                     if (!job) {
-                        writer.write(line.substring(5) + ";" + System.lineSeparator());
+                        writer.write(line.substring(4) + ";" + System.lineSeparator());
                         job = true;
                     }
                 }
