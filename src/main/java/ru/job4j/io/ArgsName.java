@@ -11,7 +11,9 @@ public class ArgsName {
     private final Map<String, String> values = new HashMap<>();
 
     public String get(String key) {
-        validateKey(key);
+        if (!values.containsKey(key)) {
+            throw new IllegalArgumentException("Данного ключа не существует");
+        }
         return values.get(key);
     }
 
@@ -20,45 +22,32 @@ public class ArgsName {
      * @param args - массив параметров
      */
     private void parse(String[] args) {
+        validate(args);
         for (String str : args) {
-            validateStr(str);
             String[] dump = str.split("=", 2);
-            String key = dump[0].substring(1);
-            String value = dump[1];
-            validateValue(value);
-            values.put(key, value);
+            values.put(dump[0].substring(1), dump[1]);
         }
     }
 
     /**
-     * метод производит валидацию значения
-     * @param value - значение
+     * Метод производит валидацию входных параметров
+     * @param args - массив входных параметров
      */
-    private void validateValue(String value) {
-        if (value.length() == 0) {
-            throw new IllegalArgumentException("Нарушение шаблона значения. Значение не определено");
+    private void validate(String[] args) {
+        if (args.length == 0) {
+            throw new IllegalArgumentException("Отсутствуют параметры запуска");
         }
-    }
-
-    /**
-     * метод производит валидацию ключа
-     * @param key - ключ
-     */
-    private void validateKey(String key) {
-        if (key.length() == 0) {
-            throw new IllegalArgumentException("Нарушение шаблона ключа. Ключ не определен");
-        } else if (!values.containsKey(key)) {
-            throw new IllegalArgumentException("Данного ключа не существует");
-        }
-    }
-
-    /**
-     * метод производит валидацию строки параметра
-     * @param str - параметр
-     */
-    private void validateStr(String str) {
-        if (!str.startsWith("-") || !str.contains("=")) {
-            throw new IllegalArgumentException("Нарушение шаблона -ключ=значение");
+        for (String str : args) {
+            if (!str.startsWith("-") || !str.contains("=")) {
+                throw new IllegalArgumentException("Нарушение шаблона -ключ=значение");
+            }
+            String[] dump = str.split("=", 2);
+            if (dump[0].length() == 0) {
+                throw new IllegalArgumentException("Нарушение шаблона ключа. Ключ не определен");
+            }
+            if (dump[1].length() == 0) {
+                throw new IllegalArgumentException("Нарушение шаблона значения. Значение не определено");
+            }
         }
     }
 
