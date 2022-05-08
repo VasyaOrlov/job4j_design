@@ -28,14 +28,8 @@ public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
         if (Files.exists(file) && !Files.isDirectory(file)) {
             FileProperty temp = new FileProperty(Files.size(file), file.getFileName().toString());
-            List<Path> list;
-            if (map.containsKey(temp)) {
-                list = new ArrayList<>(map.get(temp));
-            } else {
-                list = new ArrayList<>();
-            }
-            list.add(file.toAbsolutePath());
-            map.put(temp, list);
+            map.putIfAbsent(temp, new ArrayList<>());
+            map.get(temp).add(file);
         }
         return super.visitFile(file, attrs);
     }
