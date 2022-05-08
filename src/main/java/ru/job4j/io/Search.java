@@ -12,10 +12,9 @@ import java.util.function.Predicate;
  */
 public class Search {
     public static void main(String[] args) throws IOException {
-        if (validate(args)) {
-            Path start = Paths.get(args[0]);
-            search(start, p -> p.toFile().getName().endsWith(args[1])).forEach(System.out::println);
-        }
+        validate(args);
+        Path start = Paths.get(args[0]);
+        search(start, p -> p.toFile().getName().endsWith(args[1])).forEach(System.out::println);
     }
 
     /**
@@ -34,16 +33,14 @@ public class Search {
     /**
      * метод проводит валидацию входных параметров
      * @param args - массив аргументов
-     * @return - валидация
      */
-    public static boolean validate(String[] args) {
+    public static void validate(String[] args) {
         if (args.length < 2) {
             throw new IllegalArgumentException("Заполните параметры запуска.");
-        } else if (!Files.exists(Paths.get(args[0]))) {
+        } else if (!Files.isDirectory(Paths.get(args[0]))) {
             throw new IllegalArgumentException("Некорректный путь");
         } else if (!args[1].startsWith(".")) {
             throw new IllegalArgumentException("Некорректное разрешение файла");
         }
-        return true;
     }
 }
