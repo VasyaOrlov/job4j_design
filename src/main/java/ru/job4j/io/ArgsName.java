@@ -12,7 +12,7 @@ public class ArgsName {
 
     public String get(String key) {
         if (!values.containsKey(key)) {
-            throw new IllegalArgumentException("Данного ключа не существует");
+            throw new IllegalArgumentException(key + " - данного ключа не существует");
         }
         return values.get(key);
     }
