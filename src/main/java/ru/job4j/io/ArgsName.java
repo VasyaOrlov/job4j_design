@@ -18,26 +18,22 @@ public class ArgsName {
     }
 
     /**
-     * метод принимает массив параметров, разбивает на пары ключ-значение, записывает эти пары в карту
+     * метод принимает массив параметров, выполняет валидацию, записывает пары ключ-значение в карту
      * @param args - массив параметров
      */
     private void parse(String[] args) {
-        validate(args);
         for (String str : args) {
-            String[] dump = str.split("=", 2);
+            String[] dump = validate(str);
             values.put(dump[0].substring(1), dump[1]);
         }
     }
 
     /**
-     * Метод производит валидацию входных параметров
-     * @param args - массив входных параметров
+     * Метод производит валидацию входного параметра
+     * @param str - строка параметра
+     * @return - массив из двух элементов: ключ, значение
      */
-    private void validate(String[] args) {
-        if (args.length == 0) {
-            throw new IllegalArgumentException("Отсутствуют параметры запуска");
-        }
-        for (String str : args) {
+    private String[] validate(String str) {
             if (!str.startsWith("-") || !str.contains("=")) {
                 throw new IllegalArgumentException("Нарушение шаблона -ключ=значение");
             }
@@ -48,10 +44,13 @@ public class ArgsName {
             if (dump[1].length() == 0) {
                 throw new IllegalArgumentException("Нарушение шаблона значения. Значение не определено");
             }
-        }
+            return dump;
     }
 
     public static ArgsName of(String[] args) {
+        if (args.length == 0) {
+            throw new IllegalArgumentException("Отсутствуют параметры запуска");
+        }
         ArgsName names = new ArgsName();
         names.parse(args);
         return names;
