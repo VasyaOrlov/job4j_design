@@ -38,10 +38,10 @@ public class ArgsName {
                 throw new IllegalArgumentException("Нарушение шаблона -ключ=значение");
             }
             String[] dump = str.split("=", 2);
-            if (dump[0].length() == 0) {
+            if (dump[0].isBlank()) {
                 throw new IllegalArgumentException("Нарушение шаблона ключа. Ключ не определен");
             }
-            if (dump[1].length() == 0) {
+            if (dump[1].isBlank()) {
                 throw new IllegalArgumentException("Нарушение шаблона значения. Значение не определено");
             }
             return dump;
