@@ -9,6 +9,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class Zip {
+
     public void packFiles(List<Path> sources, File target) {
         try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target)))) {
             for (Path temp : sources) {
@@ -36,7 +37,8 @@ public class Zip {
         zip.validate(args);
         ArgsName arg = ArgsName.of(args);
         String directory = arg.get("d");
-        String exclude = arg.get("e").substring(1);
+        String exclude = arg.get("e").startsWith("*") ? arg.get("e").substring(1) : arg.get("e");
+        System.out.println(exclude);
         String output = arg.get("o");
         Predicate<Path> predicate = p -> !p.getFileName().toString().endsWith(exclude);
         List<Path> list = Search.search(Paths.get(directory), predicate);
