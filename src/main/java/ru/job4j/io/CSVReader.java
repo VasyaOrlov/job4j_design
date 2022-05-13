@@ -7,20 +7,14 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CSVReader {
-    public static void handle(ArgsName argsName) throws FileNotFoundException {
+    public static void handle(ArgsName argsName) {
         String path = argsName.get("path");
         String out = argsName.get("out");
-        OutputStream x;
-        if ("stdout".equals(out)) {
-            x = System.out;
-        } else {
-            x = new BufferedOutputStream(new FileOutputStream(out));
-        }
         String delimiter = argsName.get("delimiter");
         String[] filter = argsName.get("filter").split(",");
         ArrayList<Integer> listIndex = new ArrayList<>();
         try (BufferedReader in = new BufferedReader(new FileReader(path));
-            PrintWriter outPath = new PrintWriter(x)) {
+            PrintStream outPath = "stdout".equals(out) ? System.out : new PrintStream(new FileOutputStream(out))) {
             Scanner scanner = new Scanner(in.readLine()).useDelimiter(delimiter);
             ArrayList<String> list = new ArrayList<>();
             while (scanner.hasNext()) {
