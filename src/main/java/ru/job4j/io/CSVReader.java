@@ -1,9 +1,10 @@
 package ru.job4j.io;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.StringJoiner;
 
 public class CSVReader {
     public static void handle(ArgsName argsName) {
@@ -13,7 +14,7 @@ public class CSVReader {
         String[] filter = argsName.get("filter").split(",");
         ArrayList<Integer> listIndex = new ArrayList<>();
         try (BufferedReader in = new BufferedReader(new FileReader(path));
-        PrintWriter outPath = new PrintWriter(new FileWriter(out))) {
+            PrintWriter outPath = new PrintWriter(new FileWriter(out))) {
             Scanner scanner = new Scanner(in.readLine()).useDelimiter(delimiter);
             ArrayList<String> list = new ArrayList<>();
             while (scanner.hasNext()) {
@@ -34,9 +35,10 @@ public class CSVReader {
                     write.append(";").append(list.get(listIndex.get(i)));
                 }
             }
-            System.out.println(write);
-            if (write != null) {
-                outPath.write(write.toString());
+            if ("stdout".equals(out)) {
+                System.out.println(write);
+            } else {
+                outPath.println(write);
             }
             String line;
             while ((line = in.readLine()) != null) {
@@ -53,9 +55,10 @@ public class CSVReader {
                         writeCycle.append(";").append(listCycle.get(listIndex.get(i)));
                     }
                 }
-                System.out.println(writeCycle);
-                if (writeCycle != null) {
-                    outPath.write(writeCycle.toString());
+                if ("stdout".equals(out)) {
+                    System.out.println(writeCycle);
+                } else {
+                    outPath.println(writeCycle);
                 }
             }
         } catch (IOException e) {
@@ -65,10 +68,9 @@ public class CSVReader {
 
     public static void main(String[] args) {
         ArgsName argsName = ArgsName.of(args);
-        try {
-            handle(argsName);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (Files.isDirectory(Paths.get(argsName.get("path"))) || !(new File(argsName.get("path")).exists())) {
+            throw new IllegalArgumentException("Некорректный путь path");
         }
+        handle(argsName);
     }
 }
