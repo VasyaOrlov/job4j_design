@@ -7,14 +7,20 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CSVReader {
-    public static void handle(ArgsName argsName) {
+    public static void handle(ArgsName argsName) throws FileNotFoundException {
         String path = argsName.get("path");
         String out = argsName.get("out");
+        OutputStream x;
+        if ("stdout".equals(out)) {
+            x = System.out;
+        } else {
+            x = new BufferedOutputStream(new FileOutputStream(out));
+        }
         String delimiter = argsName.get("delimiter");
         String[] filter = argsName.get("filter").split(",");
         ArrayList<Integer> listIndex = new ArrayList<>();
         try (BufferedReader in = new BufferedReader(new FileReader(path));
-            PrintWriter outPath = new PrintWriter(new FileWriter(out))) {
+            PrintWriter outPath = new PrintWriter(x)) {
             Scanner scanner = new Scanner(in.readLine()).useDelimiter(delimiter);
             ArrayList<String> list = new ArrayList<>();
             while (scanner.hasNext()) {
@@ -35,11 +41,7 @@ public class CSVReader {
                     write.append(";").append(list.get(listIndex.get(i)));
                 }
             }
-            if ("stdout".equals(out)) {
-                System.out.println(write);
-            } else {
-                outPath.println(write);
-            }
+            outPath.println(write);
             String line;
             while ((line = in.readLine()) != null) {
                 Scanner scannerCycle = new Scanner(line).useDelimiter(delimiter);
@@ -55,22 +57,32 @@ public class CSVReader {
                         writeCycle.append(";").append(listCycle.get(listIndex.get(i)));
                     }
                 }
-                if ("stdout".equals(out)) {
-                    System.out.println(writeCycle);
-                } else {
-                    outPath.println(writeCycle);
-                }
+                outPath.println(writeCycle);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void main(String[] args) {
-        ArgsName argsName = ArgsName.of(args);
-        if (Files.isDirectory(Paths.get(argsName.get("path"))) || !(new File(argsName.get("path")).exists())) {
+    private static void validate(ArgsName argsName) {
+        String path = argsName.get("path");
+        if (Files.isDirectory(Paths.get(path)) || !(new File(path).exists())) {
             throw new IllegalArgumentException("Некорректный путь path");
         }
+        String delimiter = argsName.get("delimiter");
+        if (!";".equals(delimiter)) {
+            throw new IllegalArgumentException("Некорректный формат делиметра");
+        }
+        argsName.get("out");
+        argsName.get("filter");
+    }
+
+    public static void main(String[] args) throws FileNotFoundException {
+        if (args.length < 4) {
+            throw new IllegalArgumentException("Заполните параметры запуска.");
+        }
+        ArgsName argsName = ArgsName.of(args);
+        CSVReader.validate(argsName);
         handle(argsName);
     }
 }
