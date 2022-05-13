@@ -7,6 +7,17 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CSVReader {
+    private static StringBuilder print(ArrayList<Integer> listIndex, ArrayList<String> list) {
+        StringBuilder write = null;
+        for (int i = 0; i < listIndex.size(); i++) {
+            if (i == 0) {
+                write = new StringBuilder(list.get(listIndex.get(i)));
+            } else {
+                write.append(";").append(list.get(listIndex.get(i)));
+            }
+        }
+        return write;
+    }
     public static void handle(ArgsName argsName) {
         String path = argsName.get("path");
         String out = argsName.get("out");
@@ -27,14 +38,7 @@ public class CSVReader {
                     }
                 }
             }
-            StringBuilder write = null;
-            for (int i = 0; i < listIndex.size(); i++) {
-                if (i == 0) {
-                    write = new StringBuilder(list.get(listIndex.get(i)));
-                } else {
-                    write.append(";").append(list.get(listIndex.get(i)));
-                }
-            }
+            StringBuilder write = print(listIndex, list);
             outPath.println(write);
             String line;
             while ((line = in.readLine()) != null) {
@@ -43,14 +47,7 @@ public class CSVReader {
                 while (scannerCycle.hasNext()) {
                     listCycle.add(scannerCycle.next());
                 }
-                StringBuilder writeCycle = null;
-                for (int i = 0; i < listIndex.size(); i++) {
-                    if (i == 0) {
-                        writeCycle = new StringBuilder(listCycle.get(listIndex.get(i)));
-                    } else {
-                        writeCycle.append(";").append(listCycle.get(listIndex.get(i)));
-                    }
-                }
+                StringBuilder writeCycle = print(listIndex, listCycle);
                 outPath.println(writeCycle);
             }
         } catch (IOException e) {
