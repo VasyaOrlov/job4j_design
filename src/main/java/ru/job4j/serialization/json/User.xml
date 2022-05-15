@@ -5,8 +5,8 @@
     <name>Alex</name>
     <contact zipCode="123456" phone="+7 (111) 111-11-11"/>
     <valueses>
-        <int>1</int>
-        <int>2</int>
-        <int>3</int>
+        <values>1</values>
+        <values>2</values>
+        <values>3</values>
     </valueses>
 </User>
