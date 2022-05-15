@@ -3,15 +3,41 @@ package ru.job4j.serialization.json;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import ru.job4j.serialization.java.Contact;
-
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.*;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.Arrays;
 
+@XmlRootElement(name = "user")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class User {
-    boolean schoolMan = true;
-    short growth = 180;
-    String name = "Alex";
-    Contact tel = new Contact(123456, "+7 (111) 111-11-11");
-    int[] values = new int[] {1, 2, 3};
+    @XmlAttribute
+    boolean schoolMan;
+    @XmlAttribute
+    short growth;
+    @XmlAttribute
+    String name;
+    @XmlElement
+    Contact tel;
+    @XmlElementWrapper(name = "valueses")
+    @XmlElement(name = "values")
+    int[] values;
+
+    public User() {
+    }
+
+    public User(boolean schoolMan, short growth, String name, Contact tel, int[] values) {
+        this.schoolMan = schoolMan;
+        this.growth = growth;
+        this.name = name;
+        this.tel = tel;
+        this.values = values;
+    }
 
     @Override
     public String toString() {
@@ -24,8 +50,13 @@ public class User {
                 + '}';
     }
 
-    public static void main(String[] args) {
-        User user = new User();
+    public static void main(String[] args) throws JAXBException {
+        User user = new User(
+                true,
+                (short) 180,
+                "Alex",
+                new Contact(123456, "+7 (111) 111-11-11"),
+                new int[] {1, 2, 3});
         final Gson gson = new GsonBuilder().create();
         System.out.println(gson.toJson(user));
         final String userJson =
@@ -42,5 +73,23 @@ public class User {
                 + "}";
         final User userMod = gson.fromJson(userJson, User.class);
         System.out.println(userMod);
+
+        JAXBContext context = JAXBContext.newInstance(User.class);
+        Marshaller marshaller = context.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+        String xml = "";
+        try (StringWriter writer = new StringWriter()) {
+            marshaller.marshal(user, writer);
+            xml = writer.getBuffer().toString();
+            System.out.println(xml);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Unmarshaller unmarshaller = context.createUnmarshaller();
+        try (StringReader reader = new StringReader(xml)) {
+            User rsl = (User) unmarshaller.unmarshal(reader);
+            System.out.println(rsl);
+        }
     }
 }
