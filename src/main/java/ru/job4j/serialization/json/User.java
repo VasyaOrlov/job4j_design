@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.JSONPropertyIgnore;
 import ru.job4j.serialization.java.Contact;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -53,6 +54,7 @@ public class User {
         return name;
     }
 
+    @JSONPropertyIgnore
     public Contact getTel() {
         return tel;
     }
@@ -131,6 +133,6 @@ public class User {
         Contact testCon = new Contact();
         testUs.setTel(testCon);
         testCon.setUser(testUs);
-        System.out.println(new JSONObject(testUs));
+        System.out.println(new JSONObject(testCon));
     }
 }

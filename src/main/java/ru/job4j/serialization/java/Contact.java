@@ -28,6 +28,10 @@ public class Contact implements Serializable {
         this.user = user;
     }
 
+    public User getUser() {
+        return user;
+    }
+
     public int getZipCode() {
         return zipCode;
     }
