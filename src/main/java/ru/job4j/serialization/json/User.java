@@ -2,6 +2,8 @@ package ru.job4j.serialization.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import ru.job4j.serialization.java.Contact;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -37,6 +39,30 @@ public class User {
         this.name = name;
         this.tel = tel;
         this.values = values;
+    }
+
+    public boolean isSchoolMan() {
+        return schoolMan;
+    }
+
+    public short getGrowth() {
+        return growth;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Contact getTel() {
+        return tel;
+    }
+
+    public void setTel(Contact tel) {
+        this.tel = tel;
+    }
+
+    public int[] getValues() {
+        return values;
     }
 
     @Override
@@ -91,5 +117,20 @@ public class User {
             User rsl = (User) unmarshaller.unmarshal(reader);
             System.out.println(rsl);
         }
+
+        JSONObject jsonUSer = new JSONObject();
+        jsonUSer.put("schoolMan", user.isSchoolMan());
+        jsonUSer.put("growth", user.getGrowth());
+        jsonUSer.put("name", user.getName());
+        jsonUSer.put("tel", new JSONObject(user.getTel()));
+        jsonUSer.put("values", new JSONArray(user.getValues()));
+        System.out.println(jsonUSer);
+        System.out.println(new JSONObject(user));
+
+        User testUs = new User();
+        Contact testCon = new Contact();
+        testUs.setTel(testCon);
+        testCon.setUser(testUs);
+        System.out.println(new JSONObject(testUs));
     }
 }

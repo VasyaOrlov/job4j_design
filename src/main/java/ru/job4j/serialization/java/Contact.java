@@ -1,5 +1,6 @@
 package ru.job4j.serialization.java;
 
+import ru.job4j.serialization.json.User;
 import javax.xml.bind.annotation.*;
 import java.io.*;
 import java.nio.file.Files;
@@ -13,12 +14,18 @@ public class Contact implements Serializable {
     @XmlAttribute
     private String phone;
 
+    private User user;
+
     public Contact() {
     }
 
     public Contact(int zipCode, String phone) {
         this.zipCode = zipCode;
         this.phone = phone;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public int getZipCode() {
