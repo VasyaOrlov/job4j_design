@@ -3,6 +3,7 @@ package ru.job4j.find;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
@@ -10,7 +11,7 @@ public class Find {
 
     public void find(ArgsValidate param) throws IOException {
         FileVisitor file = new FileVisitor(getCondition(param));
-        Files.walkFileTree(Path.of("./"), file);
+        Files.walkFileTree(Path.of(param.get("d")), file);
         try (PrintWriter out = new PrintWriter(new FileWriter(param.get("o")))) {
             for (Path path : file.getPath()) {
                 out.println(path);
@@ -27,9 +28,15 @@ public class Find {
         if ("name".equals(type)) {
             rsl = p -> p.toFile().getName().equals(temp);
         } else if ("mask".equals(type)) {
-            rsl = p -> p.toFile().getName().endsWith(temp);
+            rsl = p -> {
+                String emp = temp
+                        .replace(".", "[.]")
+                        .replace("*", "\\w+")
+                        .replace("?", "\\w");
+                return Pattern.compile(emp).matcher(p.toString()).find();
+            };
         } else if ("regex".equals(type)) {
-            rsl = p -> Pattern.matches(temp, p.toFile().getName());
+            rsl = p -> Pattern.compile(temp).matcher(p.toString()).find();
         }
         return rsl;
     }
