@@ -1,0 +1,18 @@
+insert into role (name) values ('Admin');
+insert into role (name) values ('User');
+insert into users (name, role_id) values ('Vasia', 1);
+insert into users (name, role_id) values ('Petia', 2);
+insert into rules (name) values ('Basic');
+insert into rules (name) values ('All');
+insert into role_rules (role_id, rules_id) values (1, 1);
+insert into role_rules (role_id, rules_id) values (2, 2);
+insert into state (name) values ('in work');
+insert into state (name) values ('close');
+insert into category (name) values ('correct');
+insert into category (name) values ('create');
+insert into item (name, users_id, category_id, state_id) values ('First', 1, 2, 1);
+insert into item (name, users_id, category_id, state_id) values ('Second', 2, 1, 2);
+insert into comments (name, item_id) values ('fast', 1);
+insert into comments (name, item_id) values ('low', 2);
+insert into attachs (name, item_id) values ('picture1', 1);
+insert into attachs (name, item_id) values ('picture2', 2);
