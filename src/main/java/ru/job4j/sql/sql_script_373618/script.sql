@@ -49,8 +49,11 @@ on dp.device_id = d.id
 group by dp.people_id
 having avg(d.price) > 5000;
 
-select p.name, avg(d.price) from 
-devices_people as dp, people as p, devices as d
-where dp.device_id = d.id and dp.people_id = p.id
+select p.name, avg(d.price)
+from devices as d
+join devices_people as dp
+on d.id = dp.device_id
+join  people as p
+on p.id = dp.people_id
 group by p.name
 having avg(d.price) > 5000;
