@@ -1,7 +1,7 @@
 package ru.job4j.jdbc;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.Properties;
 import java.util.StringJoiner;
@@ -105,24 +105,30 @@ public class TableEditor implements AutoCloseable {
         }
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         Properties properties = new Properties();
-        properties.load(new BufferedInputStream(new FileInputStream("app.properties")));
-        TableEditor tableEditor = new TableEditor(properties);
+        try (InputStream in = TableEditor.class.getClassLoader().getResourceAsStream("app.properties")) {
+            properties.load(in);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try (TableEditor tableEditor = new TableEditor(properties)) {
+            tableEditor.createTable("Car");
+            System.out.println(getTableScheme(tableEditor.connection, "Car"));
 
-        tableEditor.createTable("Car");
-        System.out.println(getTableScheme(tableEditor.connection, "Car"));
+            tableEditor.addColumn("Car", "id", "serial primary key");
+            tableEditor.addColumn("Car", "name", "varchar(66)");
+            System.out.println(getTableScheme(tableEditor.connection, "Car"));
 
-        tableEditor.addColumn("Car", "id", "serial primary key");
-        tableEditor.addColumn("Car", "name", "varchar(66)");
-        System.out.println(getTableScheme(tableEditor.connection, "Car"));
+            tableEditor.dropColumn("Car", "id");
+            System.out.println(getTableScheme(tableEditor.connection, "Car"));
 
-        tableEditor.dropColumn("Car", "id");
-        System.out.println(getTableScheme(tableEditor.connection, "Car"));
+            tableEditor.renameColumn("Car", "name", "rename");
+            System.out.println(getTableScheme(tableEditor.connection, "Car"));
 
-        tableEditor.renameColumn("Car", "name", "rename");
-        System.out.println(getTableScheme(tableEditor.connection, "Car"));
-
-        tableEditor.dropTable("Car");
+            tableEditor.dropTable("Car");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
