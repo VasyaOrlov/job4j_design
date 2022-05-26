@@ -34,10 +34,8 @@ public class ImportDB {
     private void validate(String[] str) {
         if (str.length != 2) {
             throw new IllegalArgumentException("в стоке отсутствуют элементы или присутствуют лишние");
-        } else if (str[0].isBlank()) {
-            throw new IllegalArgumentException("в строке имя пользователя отсутствует");
-        } else if (str[1].isBlank()) {
-            throw new IllegalArgumentException("в строке email пльзователя отсутствует");
+        } else if (str[0].isBlank() || str[0].isBlank()) {
+            throw new IllegalArgumentException("в строке отсутствует имя или email");
         }
     }
 
@@ -71,10 +69,10 @@ public class ImportDB {
 
     public static void main(String[] args) throws Exception {
         Properties cfg = new Properties();
-        try (InputStream in = ImportDB.class.getClassLoader().getResourceAsStream("spammer/app.properties")) {
+        try (InputStream in = ImportDB.class.getClassLoader().getResourceAsStream("spammer.properties")) {
             cfg.load(in);
         }
-        ImportDB db = new ImportDB(cfg, "./src/main/resources/spammer/dump.txt");
+        ImportDB db = new ImportDB(cfg, "./src/main/resources/dump.txt");
         db.save(db.load());
     }
 }
