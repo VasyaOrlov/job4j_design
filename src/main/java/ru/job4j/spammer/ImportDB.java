@@ -24,10 +24,21 @@ public class ImportDB {
         try (BufferedReader rd = new BufferedReader(new FileReader(dump))) {
             rd.lines().forEach(e -> {
                         String[] sp = e.split(";");
+                        validate(sp);
                         users.add(new User(sp[0], sp[1]));
                     });
         }
         return users;
+    }
+
+    private void validate(String[] str) {
+        if (str.length != 2) {
+            throw new IllegalArgumentException("в стоке отсутствуют элементы или присутствуют лишние");
+        } else if (str[0].isBlank()) {
+            throw new IllegalArgumentException("в строке имя пользователя отсутствует");
+        } else if (str[1].isBlank()) {
+            throw new IllegalArgumentException("в строке email пльзователя отсутствует");
+        }
     }
 
     public void save(List<User> users) throws ClassNotFoundException, SQLException {
