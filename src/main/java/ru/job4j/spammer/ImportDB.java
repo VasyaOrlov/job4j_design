@@ -34,7 +34,7 @@ public class ImportDB {
     private void validate(String[] str) {
         if (str.length != 2) {
             throw new IllegalArgumentException("в стоке отсутствуют элементы или присутствуют лишние");
-        } else if (str[0].isBlank() || str[0].isBlank()) {
+        } else if (str[0].isBlank() || str[1].isBlank()) {
             throw new IllegalArgumentException("в строке отсутствует имя или email");
         }
     }
