@@ -19,8 +19,8 @@ public class MaxMin {
         T rsl = null;
         if (value.size() > 0) {
             rsl = value.get(0);
-            for (int i = 0; i < value.size() - 1; i++) {
-                T temp = value.get(i + 1);
+            for (int i = 1; i < value.size(); i++) {
+                T temp = value.get(i);
                 rsl = pred.test(rsl, temp) ? rsl : temp;
             }
         }
