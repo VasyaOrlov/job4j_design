@@ -1,10 +1,15 @@
-package ru.job4j.cache;
+package ru.job4j.cache.io;
+
+import ru.job4j.cache.AbstractCache;
+import ru.job4j.cache.DirFileCache;
 
 import java.nio.file.Path;
 import java.util.Scanner;
 
 public class Emulator {
-    Scanner scanner;
+    private static final int PUT_ACTION = 1;
+    private static final int GET_ACTION = 2;
+    private Scanner scanner;
 
     private String initDir() {
         boolean rsl = true;
@@ -24,7 +29,7 @@ public class Emulator {
     public void init() {
         scanner = new Scanner(System.in);
         String dir = initDir();
-        DirFileCache dfc = new DirFileCache(dir);
+        AbstractCache<String, String> dfc = new DirFileCache(dir);
         while (true) {
             System.out.println("Меню:");
             System.out.println("1 - загрузить содержимое файла в кеш");
@@ -36,10 +41,11 @@ public class Emulator {
             } catch (NumberFormatException nfe) {
                 System.out.println("некорректный ввод");
             }
-            if (select == 1) {
+            if (select == PUT_ACTION) {
                 System.out.println("введите название файла для загрузки файла в кеш");
-                dfc.load(scanner.nextLine());
-            } else if (select == 2) {
+                String str = scanner.nextLine();
+                dfc.put(str, dfc.get(str));
+            } else if (select == GET_ACTION) {
                 System.out.println("введите название файла для получения файла из кеша");
                 System.out.println(dfc.get(scanner.nextLine()));
             } else {
