@@ -1,6 +1,8 @@
 package ru.job4j.design.srp;
 
 import org.junit.Test;
+
+import javax.xml.bind.JAXBException;
 import java.time.ZoneOffset;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -19,7 +21,13 @@ public class ReportXMLTest {
         dateFired.setTimeZone(TimeZone.getTimeZone(ZoneOffset.of("+3")));
         Employee worker = new Employee("Ivan", dateHired, dateFired, 100);
         store.add(worker);
-        Report engine = new ReportXML(store);
+        String result;
+        try {
+            Report engine = new ReportXML(store);
+            result = engine.generate(em -> true);
+        } catch (JAXBException e) {
+            throw new RuntimeException(e);
+        }
         StringBuilder expect = new StringBuilder()
                 .append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>")
                 .append("\n<employees>")
@@ -31,6 +39,6 @@ public class ReportXMLTest {
                 .append("\" salary=\"").append(worker.getSalary())
                 .append("\"/>")
                 .append("\n</employees>\n");
-        assertThat(engine.generate(em -> true), is(expect.toString()));
+        assertThat(result, is(expect.toString()));
     }
 }
