@@ -7,6 +7,7 @@ import java.time.ZoneOffset;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
@@ -21,13 +22,8 @@ public class ReportXMLTest {
         dateFired.setTimeZone(TimeZone.getTimeZone(ZoneOffset.of("+3")));
         Employee worker = new Employee("Ivan", dateHired, dateFired, 100);
         store.add(worker);
-        String result;
-        try {
-            Report engine = new ReportXML(store);
-            result = engine.generate(em -> true);
-        } catch (JAXBException e) {
-            throw new RuntimeException(e);
-        }
+        Report engine = new ReportXML(store);
+        String result = engine.generate(em -> true);
         StringBuilder expect = new StringBuilder()
                 .append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>")
                 .append("\n<employees>")

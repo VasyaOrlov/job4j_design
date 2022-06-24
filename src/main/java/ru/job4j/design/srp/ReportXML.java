@@ -17,10 +17,14 @@ public class ReportXML implements Report {
 
     private final Store store;
 
-    public ReportXML(Store store) throws JAXBException {
+    public ReportXML(Store store) {
         this.store = store;
-        this.marshaller = JAXBContext.newInstance(Employee.Employees.class).createMarshaller();
-        this.marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+        try {
+            this.marshaller = JAXBContext.newInstance(Employee.Employees.class).createMarshaller();
+            this.marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+        } catch (JAXBException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
