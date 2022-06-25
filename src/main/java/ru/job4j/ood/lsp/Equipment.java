@@ -1,7 +1,7 @@
 package ru.job4j.ood.lsp;
 
 public class Equipment {
-    private final int armor;
+    protected int armor;
 
     public Equipment(int armor) {
         validate(armor);
@@ -10,6 +10,11 @@ public class Equipment {
 
     public int getArmor() {
         return armor;
+    }
+
+    public void setArmor(int armor) {
+        validate(armor);
+        this.armor = armor;
     }
 
     public void fight() {

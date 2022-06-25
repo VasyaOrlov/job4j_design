@@ -5,13 +5,18 @@ package ru.job4j.ood.lsp;
  */
 public class Helmet extends Equipment {
 
-    /**
-     * не учитывается инвариант родительского класса.
-     * в родительском классе в конструктуре перед инициализацией поля armor происходит валидация.
-     * здесь валидации инициализирующего значения нет - условие базового класса не сохранено
-     */
     public Helmet(int armor) {
         super(armor);
+    }
+
+    /**
+     * не учитывается инвариант родительского класса.
+     * здесь нет валидации инициализирующего значения.
+     * возможно не валидное состояние
+     */
+    @Override
+    public void setArmor(int armor) {
+        this.armor = armor;
     }
 
     /**
@@ -30,5 +35,11 @@ public class Helmet extends Equipment {
     @Override
     public boolean win() {
         return getArmor() >= 0;
+    }
+
+    public static void main(String[] args) {
+        Helmet h = new Helmet(3);
+        h.setArmor(-1);
+        System.out.println(h.getArmor());
     }
 }
