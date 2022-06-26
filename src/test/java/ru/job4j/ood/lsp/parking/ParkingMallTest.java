@@ -3,11 +3,8 @@ package ru.job4j.ood.lsp.parking;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertFalse;
-
-import org.junit.Ignore;
 import org.junit.Test;
 
-@Ignore
 public class ParkingMallTest {
 
     @Test
