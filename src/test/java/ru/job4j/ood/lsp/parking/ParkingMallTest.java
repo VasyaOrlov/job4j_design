@@ -11,7 +11,7 @@ public class ParkingMallTest {
     public void whenPassCarParking() {
         ParkingMall pk = new ParkingMall(1, 0);
         Car passCar = new PassengerCar();
-        pk.parking(passCar);
+        pk.park(passCar);
         assertThat(pk.getCars().get(0), is(passCar));
     }
 
@@ -19,7 +19,7 @@ public class ParkingMallTest {
     public void whenTruckCarParking() {
         ParkingMall pk = new ParkingMall(0, 1);
         Car truckCar = new TruckCar(2);
-        pk.parking(truckCar);
+        pk.park(truckCar);
         assertThat(pk.getCars().get(0), is(truckCar));
     }
 
@@ -27,21 +27,21 @@ public class ParkingMallTest {
     public void whenPassCarWantParkingAndNoPlace() {
         ParkingMall pk = new ParkingMall(0, 1);
         Car passCar = new PassengerCar();
-        assertFalse(pk.parking(passCar));
+        assertFalse(pk.park(passCar));
     }
 
     @Test
     public void whenTruckCarWantParkingAndNoPlace() {
         ParkingMall pk = new ParkingMall(1, 0);
         Car truckCar = new TruckCar(2);
-        assertFalse(pk.parking(truckCar));
+        assertFalse(pk.park(truckCar));
     }
 
     @Test
     public void whenTruckCarWantParkingAndNoPlaceButFreePassPlace() {
         ParkingMall pk = new ParkingMall(2, 0);
         Car truckCar = new TruckCar(2);
-        pk.parking(truckCar);
+        pk.park(truckCar);
         assertThat(pk.getCars().get(0), is(truckCar));
     }
 
@@ -49,8 +49,8 @@ public class ParkingMallTest {
     public void whenRemovePassCar() {
         ParkingMall pk = new ParkingMall(2, 0);
         Car passCar = new PassengerCar();
-        pk.parking(passCar);
-        pk.parking(passCar);
+        pk.park(passCar);
+        pk.park(passCar);
         pk.remove(passCar);
         assertThat(pk.getCountPass(), is(1));
     }
@@ -59,8 +59,8 @@ public class ParkingMallTest {
     public void whenRemoveTruckCar() {
         ParkingMall pk = new ParkingMall(0, 2);
         Car truckCar = new TruckCar(2);
-        pk.parking(truckCar);
-        pk.parking(truckCar);
+        pk.park(truckCar);
+        pk.park(truckCar);
         pk.remove(truckCar);
         assertThat(pk.getCountTruck(), is(1));
     }
@@ -69,8 +69,8 @@ public class ParkingMallTest {
     public void whenRemoveTruckCarWithPassPlace() {
         ParkingMall pk = new ParkingMall(4, 0);
         Car truckCar = new TruckCar(2);
-        pk.parking(truckCar);
-        pk.parking(truckCar);
+        pk.park(truckCar);
+        pk.park(truckCar);
         pk.remove(truckCar);
         assertThat(pk.getCountTruck(), is(1));
     }

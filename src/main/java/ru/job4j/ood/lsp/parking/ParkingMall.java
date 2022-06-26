@@ -17,7 +17,7 @@ public class ParkingMall implements Parking {
     }
 
     @Override
-    public boolean parking(Car car) {
+    public boolean park(Car car) {
         boolean rsl = freePlace(car);
         if (rsl) {
             if (car.getSize() == 1) {
@@ -32,15 +32,19 @@ public class ParkingMall implements Parking {
     }
 
     @Override
-    public void remove(Car car) {
+    public boolean remove(Car car) {
+        boolean rsl = false;
         if (cars.contains(car)) {
             cars.remove(car);
+            rsl = true;
             if (car.getSize() == 1) {
                 countPass--;
             } else if (car.getSize() > 1) {
                 countTruck--;
+
             }
         }
+        return rsl;
     }
 
     @Override
