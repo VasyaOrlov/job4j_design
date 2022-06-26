@@ -1,12 +1,27 @@
 package ru.job4j.ood.lsp.product;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Shop extends AbstractStore {
+    private static final int TOP_PERCENT = 75;
+    private static final int DISCOUNT_PERCENT = 25;
+    private static final int BOT_PERCENT = 0;
+    private static final int DISCOUNT = 30;
+
+    @Override
+    public boolean add(Food food) {
+        boolean rsl = check(food);
+        if (rsl) {
+            double fresh = food.getFreshnessPercentage();
+            if (fresh < DISCOUNT_PERCENT && fresh > BOT_PERCENT) {
+                food.setDiscount(DISCOUNT);
+            }
+            super.list.add(food);
+        }
+        return rsl;
+    }
+
     @Override
     public boolean check(Food food) {
-        double rsl = food.fresh();
-        return rsl < 75 && rsl > 0;
+        double rsl = food.getFreshnessPercentage();
+        return rsl < TOP_PERCENT && rsl > BOT_PERCENT;
     }
 }

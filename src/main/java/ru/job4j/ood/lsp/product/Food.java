@@ -57,7 +57,7 @@ public class Food {
         this.discount = discount;
     }
 
-    public double fresh() {
+    public double getFreshnessPercentage() {
         LocalDate currentDate = LocalDate.now();
         double passed = currentDate.toEpochDay() - getCreateDate().toEpochDay();
         double term = getExpiryDate().toEpochDay() - getCreateDate().toEpochDay();

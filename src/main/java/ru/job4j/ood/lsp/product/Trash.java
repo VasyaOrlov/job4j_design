@@ -1,11 +1,9 @@
 package ru.job4j.ood.lsp.product;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Trash extends AbstractStore {
+    private static final int TRASH_PERCENT = 0;
     @Override
     public boolean check(Food food) {
-        return food.fresh() <= 0;
+        return food.getFreshnessPercentage() <= TRASH_PERCENT;
     }
 }
