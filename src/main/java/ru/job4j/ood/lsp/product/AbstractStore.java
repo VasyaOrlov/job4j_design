@@ -9,11 +9,11 @@ public abstract class AbstractStore implements Store {
 
     @Override
     public boolean add(Food food) {
-        boolean rsl = check(food);
-        if (rsl) {
-            list.add(food);
+        if (!check(food)) {
+            return false;
         }
-        return rsl;
+        list.add(food);
+        return true;
     }
 
     @Override
