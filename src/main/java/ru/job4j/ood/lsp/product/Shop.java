@@ -8,15 +8,13 @@ public class Shop extends AbstractStore {
 
     @Override
     public boolean add(Food food) {
-        boolean rsl = check(food);
-        if (rsl) {
+        if (check(food)) {
             double fresh = food.getFreshnessPercentage();
             if (fresh < DISCOUNT_PERCENT && fresh > BOT_PERCENT) {
                 food.setDiscount(DISCOUNT);
             }
-            super.list.add(food);
         }
-        return rsl;
+        return super.add(food);
     }
 
     @Override
