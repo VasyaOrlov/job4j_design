@@ -12,7 +12,7 @@ public class ParkingMallTest {
         ParkingMall pk = new ParkingMall(1, 0);
         Car passCar = new PassengerCar();
         pk.park(passCar);
-        assertThat(pk.getCars().get(0), is(passCar));
+        assertThat(pk.getCars().iterator().next(), is(passCar));
     }
 
     @Test
@@ -20,7 +20,7 @@ public class ParkingMallTest {
         ParkingMall pk = new ParkingMall(0, 1);
         Car truckCar = new TruckCar(2);
         pk.park(truckCar);
-        assertThat(pk.getCars().get(0), is(truckCar));
+        assertThat(pk.getCars().iterator().next(), is(truckCar));
     }
 
     @Test
@@ -42,7 +42,7 @@ public class ParkingMallTest {
         ParkingMall pk = new ParkingMall(2, 0);
         Car truckCar = new TruckCar(2);
         pk.park(truckCar);
-        assertThat(pk.getCars().get(0), is(truckCar));
+        assertThat(pk.getCars().iterator().next(), is(truckCar));
     }
 
     @Test

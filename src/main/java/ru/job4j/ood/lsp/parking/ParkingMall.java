@@ -1,10 +1,13 @@
 package ru.job4j.ood.lsp.parking;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ParkingMall implements Parking {
-    private final List<Car> cars;
+    private final Set<Car> pCars;
+    private final Set<Car> truck;
     private final int passPlace;
     private final int truckPlace;
     private int countPass = 0;
@@ -13,19 +16,20 @@ public class ParkingMall implements Parking {
     public ParkingMall(int passPlace, int truckPlace) {
         this.passPlace = passPlace;
         this.truckPlace = truckPlace;
-        this.cars = new ArrayList<>(passPlace + truckPlace);
+        this.pCars = new HashSet<>(passPlace);
+        this.truck = new HashSet<>(truckPlace);
     }
 
     @Override
     public boolean park(Car car) {
         boolean rsl = freePlace(car);
         if (rsl) {
-            if (car.getSize() == 1) {
+            if (car.getSize() == PassengerCar.SIZE) {
                 countPass++;
-                cars.add(car);
-            } else if (car.getSize() > 1) {
+                pCars.add(car);
+            } else if (car.getSize() > PassengerCar.SIZE) {
                 countTruck++;
-                cars.add(car);
+                truck.add(car);
             }
         }
         return rsl;
@@ -34,15 +38,14 @@ public class ParkingMall implements Parking {
     @Override
     public boolean remove(Car car) {
         boolean rsl = false;
-        if (cars.contains(car)) {
-            cars.remove(car);
+        if (car.getSize() == PassengerCar.SIZE && pCars.contains(car)) {
+            pCars.remove(car);
+            countPass--;
             rsl = true;
-            if (car.getSize() == 1) {
-                countPass--;
-            } else if (car.getSize() > 1) {
-                countTruck--;
-
-            }
+        } else if (car.getSize() > PassengerCar.SIZE && truck.contains(car)) {
+            truck.remove(car);
+            countTruck--;
+            rsl = true;
         }
         return rsl;
     }
@@ -56,17 +59,19 @@ public class ParkingMall implements Parking {
             delta = countTruck - truckPlace;
         }
         int freePass = passPlace - countPass - delta;
-        if (car.getSize() == 1 && (freePass) > 0) {
+        if (car.getSize() == PassengerCar.SIZE && (freePass) > 0) {
             rsl = true;
-        } else if (car.getSize() > 1
+        } else if (car.getSize() > PassengerCar.SIZE
                 && (freeTruck > 0 || (freePass) >= car.getSize())) {
             rsl = true;
         }
         return rsl;
     }
 
-    public List<Car> getCars() {
-        return new ArrayList<>(cars);
+    public Set<Car> getCars() {
+        Set<Car> rsl = new HashSet<>(pCars);
+        rsl.addAll(truck);
+        return rsl;
     }
 
     public int getCountPass() {
