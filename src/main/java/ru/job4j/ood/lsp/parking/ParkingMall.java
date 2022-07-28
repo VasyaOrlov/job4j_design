@@ -1,8 +1,6 @@
 package ru.job4j.ood.lsp.parking;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class ParkingMall implements Parking {
