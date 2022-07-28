@@ -3,12 +3,13 @@ package ru.job4j.ood.lsp.parking;
 import java.util.Objects;
 
 public class PassengerCar implements Car {
+    private static int count = 1;
     public static final int SIZE = 1;
 
     private final int number;
 
-    public PassengerCar(int number) {
-        this.number = number;
+    public PassengerCar() {
+        this.number = count++;
     }
     @Override
     public int getSize() {

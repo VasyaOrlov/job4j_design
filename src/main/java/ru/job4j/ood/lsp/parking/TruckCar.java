@@ -3,16 +3,17 @@ package ru.job4j.ood.lsp.parking;
 import java.util.Objects;
 
 public class TruckCar implements Car {
+    private static int count = 1;
     private final int size;
 
     private final int number;
 
-    public TruckCar(int size, int number) {
+    public TruckCar(int size) {
         if (size <= PassengerCar.SIZE) {
             throw new IllegalArgumentException("размер грузовика должен быть не меньше 2");
         }
         this.size = size;
-        this.number = number;
+        this.number = count++;
     }
 
     @Override
