@@ -8,32 +8,26 @@ public class SimpleMenu implements Menu {
 
     @Override
     public boolean add(String parentName, String childName, ActionDelegate actionDelegate) {
-        boolean rsl = false;
-        boolean checkChild = findItem(childName).isEmpty();
-        if (checkChild && Objects.equals(parentName, Menu.ROOT)) {
+        if (findItem(childName).isPresent()) {
+            return false;
+        }
+        if (Objects.equals(parentName, Menu.ROOT)) {
             MenuItem item = new SimpleMenuItem(childName, actionDelegate);
             rootElements.add(item);
-            rsl = true;
-        } else if (checkChild) {
-            Optional<ItemInfo> parent = findItem(parentName);
-            if (parent.isPresent()) {
-                parent.map(x -> x.menuItem.getChildren())
-                        .ifPresent(x -> x.add(new SimpleMenuItem(childName, actionDelegate)));
-                rsl = true;
-            }
+            return true;
         }
-        return rsl;
+        if (findItem(parentName).isEmpty()) {
+            return false;
+        }
+        findItem(parentName)
+                .map(x -> x.menuItem.getChildren())
+                .ifPresent(x -> x.add(new SimpleMenuItem(childName, actionDelegate)));
+        return true;
     }
 
     @Override
     public Optional<MenuItemInfo> select(String itemName) {
-        Optional<MenuItemInfo> menuItemInfo = Optional.empty();
-        Optional<ItemInfo> optionalItemInfo = findItem(itemName);
-        if (optionalItemInfo.isPresent()) {
-            ItemInfo itemInfo = optionalItemInfo.get();
-            menuItemInfo = Optional.of(new MenuItemInfo(itemInfo.menuItem, itemInfo.number));
-        }
-        return menuItemInfo;
+        return findItem(itemName).map(e -> new MenuItemInfo(e.menuItem, e.number));
     }
 
     @Override
@@ -56,9 +50,9 @@ public class SimpleMenu implements Menu {
 
     private static class SimpleMenuItem implements MenuItem {
 
-        private String name;
-        private List<MenuItem> children = new ArrayList<>();
-        private ActionDelegate actionDelegate;
+        private final String name;
+        private final List<MenuItem> children = new ArrayList<>();
+        private final ActionDelegate actionDelegate;
 
         public SimpleMenuItem(String name, ActionDelegate actionDelegate) {
             this.name = name;
@@ -118,7 +112,7 @@ public class SimpleMenu implements Menu {
 
     }
 
-    private class ItemInfo {
+    private static class ItemInfo {
 
         MenuItem menuItem;
         String number;

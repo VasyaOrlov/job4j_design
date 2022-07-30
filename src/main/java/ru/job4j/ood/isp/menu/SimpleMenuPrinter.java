@@ -6,11 +6,9 @@ public class SimpleMenuPrinter implements MenuPrinter {
     public void print(Menu menu) {
         for (Menu.MenuItemInfo item : menu) {
             int amount = item.getNumber().length();
-            if (amount > 2) {
-                System.out.println(INDENT.repeat(amount) + item.getNumber() + item.getName());
-            } else {
-                System.out.println(item.getNumber() + item.getName());
-            }
+            System.out.println(amount > 2
+                    ? INDENT.repeat(amount) + item.getNumber() + item.getName()
+                    : item.getNumber() + item.getName());
         }
     }
 }
