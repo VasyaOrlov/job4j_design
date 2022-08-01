@@ -78,6 +78,20 @@ public class ControlQualityTest {
     }
 
     @Test
+    public void whenShopAndSetDiscountAndResort() {
+        LocalDate now = LocalDate.now();
+        LocalDate createDate = now.minusDays(20);
+        LocalDate expiryDate = now.plusDays(5);
+        Food food = new Food("food", expiryDate, createDate, 100, 0);
+        List<Food> foodList = List.of(food);
+        ControlQuality controlQuality = new ControlQuality(storeList);
+        controlQuality.control(foodList);
+        food.setExpiryDate(now.minusDays(1));
+        controlQuality.resort();
+        assertThat(trashStore.findAll(), is(List.of(food)));
+    }
+
+    @Test
     public void whenSeveralGoods() {
         LocalDate now = LocalDate.now();
 
